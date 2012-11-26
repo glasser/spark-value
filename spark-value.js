@@ -1,19 +1,28 @@
+Foos = new Meteor.Collection("foo");
+
 if (Meteor.isClient) {
-  Template.hello.greeting = function () {
-    return "Welcome to spark-value.";
+  Template.hello.foo = function () {
+    return Foos.findOne();
   };
 
   Template.hello.events({
-    'click input' : function () {
-      // template data, if any, is available in 'this'
-      if (typeof console !== 'undefined')
-        console.log("You pressed the button");
+    'keyup #oneField' : function (event, template) {
+      if (event.which !== 13)
+        return;
+      Foos.update(this._id, {$set: {one: event.target.value}});
+    },
+    'keyup #twoField' : function (event, template) {
+      if (event.which !== 13)
+        return;
+      Foos.update(this._id, {$set: {two: event.target.value}});
     }
   });
 }
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
-    // code to run on server at startup
+    if (Foos.find().count() === 0) {
+      Foos.insert({one: "bar", two: "baz"});
+    }
   });
 }

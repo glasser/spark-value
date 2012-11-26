@@ -7,7 +7,17 @@
 </body>
 
 <template name="hello">
-  <h1>Hello World!</h1>
-  {{greeting}}
-  <input type="button" value="Click" />
+  <h1>Spark Preserve Value</h1>
+  <p>This example shows two problems with the current patch implementation.</p>
+  <p>First: INPUTs other than TEXT can't have a reactive variable. The value
+     shown in the "one button" should be equal to the value on the "one" line but
+     it stays its initial (pre-data-load) empty value.</p>
+  <p>Second: If you edit both text fields and then hit enter in the second, the
+     first gets reset.  Preserved fields should preserve the user value if it is
+     edited.</p>
+  {{#with foo}}
+    <p>One: <input type='text' value='{{one}}' id='oneField'> {{one}}</p>
+    <p>Two: <input type='text' value='{{two}}' id='twoField'> {{two}}</p>
+    <p>One button: <input type='submit' value='{{one}}' id='oneButton'></p>
+  {{/with}}
 </template>
